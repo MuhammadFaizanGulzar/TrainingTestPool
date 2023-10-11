@@ -5,16 +5,19 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InitialSetup", "InitialSetup\InitialSetup.csproj", "{D1DC2A63-FF7A-4336-8459-A1109F4DDDFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiCRUD", "WebApiCRUD\WebApiCRUD.csproj", "{65286A4C-A312-4660-9BE1-A1B56933A855}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiCRUD", "WebApiCRUD\WebApiCRUD.csproj", "{65286A4C-A312-4660-9BE1-A1B56933A855}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5BE6B85C-74B4-4B6C-BE45-9321B3C77754} = {5BE6B85C-74B4-4B6C-BE45-9321B3C77754}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRUD.Application", "CRUD.Application\CRUD.Application.csproj", "{5BE6B85C-74B4-4B6C-BE45-9321B3C77754}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRUD.Application", "CRUD.Application\CRUD.Application.csproj", "{5BE6B85C-74B4-4B6C-BE45-9321B3C77754}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRUD.Domain", "CRUD.Domain\CRUD.Domain.csproj", "{FC72B833-D02F-4F79-99C8-528F703422B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRUD.Domain", "CRUD.Domain\CRUD.Domain.csproj", "{FC72B833-D02F-4F79-99C8-528F703422B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRUD.Infrastructure", "CRUD.Infrastructure\CRUD.Infrastructure.csproj", "{506DF0F9-C012-49D8-AC91-9C7E9198A1E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRUD.Infrastructure", "CRUD.Infrastructure\CRUD.Infrastructure.csproj", "{506DF0F9-C012-49D8-AC91-9C7E9198A1E0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5BE6B85C-74B4-4B6C-BE45-9321B3C77754} = {5BE6B85C-74B4-4B6C-BE45-9321B3C77754}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

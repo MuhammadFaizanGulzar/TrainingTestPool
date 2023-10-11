@@ -4,6 +4,7 @@ using CRUD.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRUD.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231011091123_rolesSeeded")]
+    partial class rolesSeeded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -74,14 +76,14 @@ namespace CRUD.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5a1c01ac-88c6-4c66-b6d1-a8ab32f05997",
+                            Id = "9a96fc49-ca7d-4612-9434-b6716e04869a",
                             ConcurrencyStamp = "1",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "03b3e03c-5fe3-4689-bd3f-ef3df747e0b4",
+                            Id = "a6cfe954-a12d-4ac4-a8f7-910c47cb884c",
                             ConcurrencyStamp = "2",
                             Name = "User",
                             NormalizedName = "User"

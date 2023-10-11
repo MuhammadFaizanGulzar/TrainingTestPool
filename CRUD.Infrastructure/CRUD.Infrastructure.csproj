@@ -11,6 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.11">
       <PrivateAssets>all</PrivateAssets>
@@ -21,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CRUD.Application\CRUD.Application.csproj" />
     <ProjectReference Include="..\CRUD.Domain\CRUD.Domain.csproj" />
   </ItemGroup>
 
