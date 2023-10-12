@@ -11,6 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApiCRUD", "WebApiCRUD\We
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRUD.Application", "CRUD.Application\CRUD.Application.csproj", "{5BE6B85C-74B4-4B6C-BE45-9321B3C77754}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FC72B833-D02F-4F79-99C8-528F703422B3} = {FC72B833-D02F-4F79-99C8-528F703422B3}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CRUD.Domain", "CRUD.Domain\CRUD.Domain.csproj", "{FC72B833-D02F-4F79-99C8-528F703422B3}"
 EndProject

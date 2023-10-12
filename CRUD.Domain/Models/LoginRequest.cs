@@ -1,24 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CRUD.Domain.Models
 {
-    public class RegisterUser
+    public class LoginRequest
     {
-        [Required]
-        public string? userName { get; set; }
-
-        [Required]
         public string? Email { get; set; }
-
-        public string? role { get; set; }
-
-        [Required]
         public string? Password { get; set; }
-
     }
 }
