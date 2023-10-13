@@ -41,11 +41,11 @@ namespace CRUD.Infrastructure.Services
             try
             {
                 var result = await _userManager.CreateAsync(user, password);
+                var roleEntity = await _roleManager.FindByNameAsync(role);
                 if (result.Succeeded)
                 {
                     // Find the role based on the role name
-                    var roleEntity = await _roleManager.FindByNameAsync(role);
-
+                   
                     if (roleEntity != null)
                     {
                         var userRole = new CRUD.Domain.Models.UserRole
@@ -66,11 +66,13 @@ namespace CRUD.Infrastructure.Services
             }
         }
 
-        public async Task<AuthResponse> Authenticate(string email, string password, HttpContext httpContext)
+        public async Task<AuthResponse> Authenticate(string username, string password, HttpContext httpContext)
         {
             try
             {
-                var user = await _userManager.FindByNameAsync(email);
+
+                var user = await _userManager.FindByNameAsync(username);
+                var roles = await _userManager.GetRolesAsync(user);
                 if (user == null || !await _userManager.CheckPasswordAsync(user, password))
                 {
                     return new AuthResponse
@@ -86,8 +88,10 @@ namespace CRUD.Infrastructure.Services
                 {
                     var claims = new[]
                     {
+                        new Claim("id", user.Id.ToString()),
                         new Claim("Name", user.UserName),
-                        new Claim("Email", user.Email)
+                        new Claim("Email", user.Email),
+                        new Claim("Role", string.Join(",", roles))
                     };
 
                     var jwtKey = _configuration["Jwt:Key"];
@@ -132,5 +136,20 @@ namespace CRUD.Infrastructure.Services
                 throw;
             }
         }
+
+        public async Task<User> GetUserById(int id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+
+            if (user != null)
+            {
+                return user;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
     }
 }

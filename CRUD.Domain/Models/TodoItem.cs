@@ -13,5 +13,6 @@ namespace CRUD.Domain.Models
         public bool IsCompleted { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
+        public int UserId { get; set; }
     }
 }

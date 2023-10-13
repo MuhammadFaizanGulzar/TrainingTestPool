@@ -12,6 +12,8 @@ namespace CRUD.Application.Interfaces
     public interface IAuthenticationservice
     {
         Task<IdentityResult> Register(User user, string password, string role);
-        Task<AuthResponse> Authenticate(string email, string password, HttpContext httpContext);
+        Task<AuthResponse> Authenticate(string username, string password, HttpContext httpContext);
+        Task<User> GetUserById(int id);
+
     }
 }

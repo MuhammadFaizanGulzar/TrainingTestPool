@@ -76,8 +76,7 @@ namespace WebApiCRUD.Controllers
         {
             try
             {
-                var authResponse = await _authenticationService.Authenticate(loginUser.Email.ToLower(), loginUser.Password, _httpContextAccessor.HttpContext);
-
+                var authResponse = await _authenticationService.Authenticate(loginUser.username, loginUser.Password, _httpContextAccessor.HttpContext);
 
                 if (authResponse?.Token == null)
                 {
@@ -85,7 +84,7 @@ namespace WebApiCRUD.Controllers
 
                 }
 
-                return StatusCode(StatusCodes.Status201Created, new Response { Status = authResponse?.message, Message = "Login Successfull!" });
+                return StatusCode(StatusCodes.Status201Created, new Response { Status = authResponse?.Token, Message = "Login Successfull!" });
             }
             catch (Exception ex)
             {
