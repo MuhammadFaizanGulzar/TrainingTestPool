@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Calculator.Interfaces;
+
 
 namespace CalculatorOperations
 {
-    public class CalculatorOperation
+    public class CalculatorOperation : ICalculator
     {
         public double Add(double num1, double num2)
         {
@@ -20,12 +17,6 @@ namespace CalculatorOperations
 
         public double Multiply(double num1, double num2)
         {
-            //for (int i = 0; i < Math.Abs(num2); i++)
-            //{
-            //    result += num1;
-            //}
-
-            //return (num2 < 0) ? -result : result;
 
             int sign = 1;
 
@@ -53,20 +44,13 @@ namespace CalculatorOperations
 
         public double Divide(double num1, double num2)
         {
+ 
             if (num2 == 0)
             {
                 throw new DivideByZeroException("Division by zero is not allowed.");
             }
 
-            double result = 0;
-            double absNum1 = Math.Abs(num1);
-            double absNum2 = Math.Abs(num2);
-
-            while (absNum1 >= absNum2)
-            {
-                absNum1 -= absNum2;
-                result++;
-            }
+            double result = Math.Abs(num1) / Math.Abs(num2);
 
             if ((num1 < 0 && num2 > 0) || (num1 > 0 && num2 < 0))
             {
@@ -74,6 +58,7 @@ namespace CalculatorOperations
             }
 
             return result;
+
         }
     }
 }
