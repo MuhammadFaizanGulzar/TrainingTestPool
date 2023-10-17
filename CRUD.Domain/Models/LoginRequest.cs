@@ -8,7 +8,7 @@ namespace CRUD.Domain.Models
 {
     public class LoginRequest
     {
-        public string? username { get; set; }
-        public string? Password { get; set; }
+        public string username { get; set; }
+        public string Password { get; set; }
     }
 }

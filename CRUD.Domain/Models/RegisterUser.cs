@@ -10,15 +10,15 @@ namespace CRUD.Domain.Models
     public class RegisterUser
     {
         [Required]
-        public string? userName { get; set; }
+        public string userName { get; set; }
 
         [Required]
-        public string? Email { get; set; }
+        public string Email { get; set; }
 
-        public string? role { get; set; }
+        public string role { get; set; }
 
         [Required]
-        public string? Password { get; set; }
+        public string Password { get; set; }
 
     }
 }

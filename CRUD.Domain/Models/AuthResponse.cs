@@ -8,7 +8,8 @@ namespace CRUD.Domain.Models
 {
     public class AuthResponse
     {
-        public string? Token { get; set; }
-        public string? message { get; set; }
+        public string Token { get; set; }
+
+        public string message { get; set; }
     }
 }

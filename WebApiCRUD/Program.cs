@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using CRUD.Infrastructure.Services;
 using CRUD.Application.Interfaces;
 using CRUD.Domain.Models;
+using WebApiCRUD.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 
 // Configure ASP.NET Core Identity
@@ -74,6 +76,8 @@ builder.Services.AddAuthentication(config =>
     });
 
 builder.Services.AddScoped<IAuthenticationservice, AuthenticationService>();
+builder.Services.AddScoped<UserManager<User>>();
+builder.Services.AddScoped<SignInManager<User>>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -91,6 +95,7 @@ if (app.Environment.IsDevelopment())
     app.UseRouting();
     app.UseAuthentication();    
     app.UseAuthorization();
+    app.UseMiddleware<userAccessMiddleware>();
 }
 
 app.UseHttpsRedirection();
