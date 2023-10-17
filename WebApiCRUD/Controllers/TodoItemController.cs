@@ -92,7 +92,6 @@ namespace Web_API_CRUD.Controllers
 
 
         //POST/api/todo
-        //[Authorize(Roles = "User, Admin")]
         [HttpPost("create")]
         public async Task<ActionResult<TodoItem>> createTodo(TodoItem todo)
         {
@@ -133,7 +132,6 @@ namespace Web_API_CRUD.Controllers
 
         // PUT /api/todo/{id}
         [HttpPut("{id}")]
-        [Authorize(Roles = "User, Admin")] 
         public async Task<IActionResult> UpdateTodo(Guid id, TodoItem updatedTodo)
         {
 
@@ -177,7 +175,6 @@ namespace Web_API_CRUD.Controllers
 
         // DELETE /api/todo/{id}
         [HttpDelete("{id}")]
-        //[Authorize(Roles = "User, Admin")]
         public async Task<IActionResult> DeleteTodo(Guid id)
         {
             int? userId = null;
