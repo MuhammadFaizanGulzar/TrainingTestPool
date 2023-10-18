@@ -1,0 +1,39 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System;
+using Task_4_NETMVCandRazorPages.Data;
+using Task_4_NETMVCandRazorPages.Model;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+//builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
+//builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
+//    builder.Configuration.GetConnectionString("DefaultConnection")
+//    ));
+
+// Configure ASP.NET Core Identity
+//builder.Services.AddIdentity<User, Role>()
+//    .AddEntityFrameworkStores<ApplicationDbContext>()
+//    .AddDefaultTokenProviders();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthorization();
+
+app.MapRazorPages();
+
+app.Run();
