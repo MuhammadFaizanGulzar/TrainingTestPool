@@ -36,7 +36,7 @@ namespace WebApiCRUD.Middleware
 
                     var isAdmin = await userManager.IsInRoleAsync(user, "Admin");
 
-                    if (!isAdmin)
+                    if (!roles.Contains("Admin"))
                     {                       
                         // Check if the ToDo with the given ID belongs to the authenticated user.
                         var todo = await GetUserTodoById(user, todoId, dbcontext);
