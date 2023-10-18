@@ -3,9 +3,11 @@ using CRUD.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using WebApiCRUD.CustomAttribute;
 
 namespace WebApiCRUD.Middleware
 {
+
     public class userAccessMiddleware
     {
         private readonly RequestDelegate _next;
@@ -18,24 +20,33 @@ namespace WebApiCRUD.Middleware
 
         public async Task InvokeAsync(HttpContext context, UserManager<User> userManager, AppDbContext dbcontext)
         {
-            if (context.User.Identity.IsAuthenticated)
+            var hasCheckUserAccessAttribute = context.GetEndpoint()?.Metadata?.GetMetadata<CheckUserAccessAttribute>() != null;
+
+            if (hasCheckUserAccessAttribute && context.User.Identity.IsAuthenticated)
             {
                 var userId = context.User.FindFirst("id")?.Value;
                 var todoIdString = context.Request.RouteValues["Id"]?.ToString(); // Adjust this based on your routing.
 
                 if (!string.IsNullOrEmpty(userId) && Guid.TryParse(todoIdString, out Guid todoId))
                 {
+
                     var user = await userManager.FindByIdAsync(userId);
 
-                    // Check if the ToDo with the given ID belongs to the authenticated user.
-                    var todo = await GetUserTodoById(user, todoId, dbcontext);
+                    var roles = await userManager.GetRolesAsync(user);
 
-                    if (todo == null || user == null || todo.UserId != user.Id)
-                    {
-                        //context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                        context.Response.StatusCode = (int)System.Net.HttpStatusCode.Unauthorized;
-                        await context.Response.WriteAsJsonAsync(new { message = "Permission Denied"});
-                        return;
+                    var isAdmin = await userManager.IsInRoleAsync(user, "Admin");
+
+                    if (!isAdmin)
+                    {                       
+                        // Check if the ToDo with the given ID belongs to the authenticated user.
+                        var todo = await GetUserTodoById(user, todoId, dbcontext);
+
+                        if (todo == null || user == null || todo.UserId != user.Id)
+                        {
+                            context.Response.StatusCode = (int)System.Net.HttpStatusCode.Unauthorized;
+                            await context.Response.WriteAsJsonAsync(new { message = "Permission Denied" });
+                            return;
+                        }
                     }
                 }
             }

@@ -102,7 +102,7 @@ namespace CRUD.Infrastructure.Services
                     issuer: null, // your issuer
                     audience: null, // your audience
                     claims: claims,
-                    expires: DateTime.Now.AddMinutes(1), // adjust the expiration time
+                    expires: DateTime.Now.AddHours(1), // adjust the expiration time
                     signingCredentials: creds
                     );
                     string stringToken = new JwtSecurityTokenHandler().WriteToken(token);
