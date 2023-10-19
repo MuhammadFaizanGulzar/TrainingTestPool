@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Identity;
 using CRUD.Application.Interfaces;
 using System.Data;
 using System.Security.Claims;
-using WebApiCRUD.CustomAttribute;
 
 namespace Web_API_CRUD.Controllers
 {
@@ -92,7 +91,7 @@ namespace Web_API_CRUD.Controllers
 
 
         //POST/api/todo
-        [CheckUserAccess]
+      
         [HttpPost("create")]
         public async Task<ActionResult<TodoItem>> createTodo(TodoItem todo)
         {
@@ -132,7 +131,7 @@ namespace Web_API_CRUD.Controllers
         }
 
         // PUT /api/todo/{id}
-        [CheckUserAccess]
+    
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTodo(Guid id, TodoItem updatedTodo)
         {
@@ -176,7 +175,7 @@ namespace Web_API_CRUD.Controllers
         }
 
         // DELETE /api/todo/{id}
-        [CheckUserAccess]
+        [ServiceFilter(typeof(UserAccessActionFilter))]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodo(Guid id)
         {

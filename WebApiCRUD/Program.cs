@@ -65,6 +65,8 @@ builder.Services.AddAuthentication(config =>
 builder.Services.AddScoped<IAuthenticationservice, AuthenticationService>();
 builder.Services.AddScoped<UserManager<User>>();
 builder.Services.AddScoped<SignInManager<User>>();
+builder.Services.AddScoped<UserAccessActionFilter>();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -83,7 +85,7 @@ if (app.Environment.IsDevelopment())
     app.UseAuthentication();    
     app.UseAuthorization();
     app.UseMiddleware<VerifyTokenMiddleware>();
-    app.UseMiddleware<userAccessMiddleware>();
+    
 
 }
 
