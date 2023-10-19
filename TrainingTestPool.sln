@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InitialSetup", "InitialSetup\InitialSetup.csproj", "{D1DC2A63-FF7A-4336-8459-A1109F4DDDFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task 4_NETMVCandRazorPages", "Task 4_NETMVCandRazorPages\Task 4_NETMVCandRazorPages.csproj", "{D25C910F-745C-42CE-95E6-8C90A1FA012B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task 4_NETMVCandRazorPages", "Task 4_NETMVCandRazorPages\Task 4_NETMVCandRazorPages.csproj", "{D25C910F-745C-42CE-95E6-8C90A1FA012B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

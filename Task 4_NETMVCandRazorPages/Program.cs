@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using Task_4_NETMVCandRazorPages.Data;
-using Task_4_NETMVCandRazorPages.Model;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
