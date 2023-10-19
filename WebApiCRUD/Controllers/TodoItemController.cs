@@ -91,7 +91,7 @@ namespace Web_API_CRUD.Controllers
 
 
         //POST/api/todo
-      
+        [ServiceFilter(typeof(UserAccessActionFilter))]
         [HttpPost("create")]
         public async Task<ActionResult<TodoItem>> createTodo(TodoItem todo)
         {
@@ -131,7 +131,7 @@ namespace Web_API_CRUD.Controllers
         }
 
         // PUT /api/todo/{id}
-    
+        [ServiceFilter(typeof(UserAccessActionFilter))]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTodo(Guid id, TodoItem updatedTodo)
         {

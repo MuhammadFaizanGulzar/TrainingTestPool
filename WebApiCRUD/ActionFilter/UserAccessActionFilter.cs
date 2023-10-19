@@ -24,7 +24,7 @@ public class UserAccessActionFilter : IAsyncActionFilter
         if (context.HttpContext.User.Identity.IsAuthenticated)
         {
             var userId = context.HttpContext.User.FindFirst("id")?.Value;
-            var todoIdString = context.RouteData.Values["Id"]?.ToString(); // Adjust this based on your routing.
+            var todoIdString = context.RouteData.Values["Id"]?.ToString(); 
 
             if (!string.IsNullOrEmpty(userId) && Guid.TryParse(todoIdString, out Guid todoId))
             {
@@ -43,9 +43,7 @@ public class UserAccessActionFilter : IAsyncActionFilter
                     }
                 }
             }
-        }
-
-        await next();
+      }
     }
 
     private async Task<TodoItem> GetUserTodoById(User user, Guid todoId)
