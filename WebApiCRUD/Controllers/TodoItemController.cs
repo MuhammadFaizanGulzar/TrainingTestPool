@@ -40,14 +40,14 @@ namespace Web_API_CRUD.Controllers
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodos()
         {
 
-            int? userId = null;
-            var userIdClaim = _httpContextAccessor.HttpContext.User.FindFirst("id")?.Value;
+            int userId = 0;
+            var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst("id")?.Value;
             if (userIdClaim != null && int.TryParse(userIdClaim, out int parsedUserId))
             {
                 userId = parsedUserId;
             }
 
-            var user = await _authenticationService.GetUserById((int)userId);
+            var user = await _authenticationService.GetUserById(userId);
             var roles = await _userManager.GetRolesAsync(user);
 
 
@@ -60,7 +60,7 @@ namespace Web_API_CRUD.Controllers
             else if (roles.Contains("User"))
             {
          
-                if (userId != null)
+                if (userId != 0)
                 {
                     var todosUser = await _context.Todos
                         .Where(todo => todo.UserId == userId)
@@ -97,14 +97,14 @@ namespace Web_API_CRUD.Controllers
         public async Task<ActionResult<TodoItem>> createTodo(TodoItem todo)
         {
 
-            int? userId = null;
-            var userIdClaim = _httpContextAccessor.HttpContext.User.FindFirst("id")?.Value;
+            int userId = 0;
+            var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst("id")?.Value;
             if (userIdClaim != null && int.TryParse(userIdClaim, out int parsedUserId))
             {
                 userId = parsedUserId;
             }
 
-            var user = await _authenticationService.GetUserById((int)userId);
+            var user = await _authenticationService.GetUserById(userId);
             var roles = await _userManager.GetRolesAsync(user);
 
             if (ModelState.IsValid)
@@ -137,7 +137,7 @@ namespace Web_API_CRUD.Controllers
         {
 
             int? userId = null;
-            var userIdClaim = _httpContextAccessor.HttpContext.User.FindFirst("id")?.Value;
+            var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst("id")?.Value;
             if (userIdClaim != null && int.TryParse(userIdClaim, out int parsedUserId))
             {
                 userId = parsedUserId;
@@ -151,9 +151,9 @@ namespace Web_API_CRUD.Controllers
             }
 
             // Get the user's roles from the claims
-            var userRoles = _httpContextAccessor.HttpContext.User.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList();
+            var userRoles = _httpContextAccessor.HttpContext?.User.FindAll("Role").Select(c => c.Value).ToList();
 
-            if (userRoles.Contains("Admin") || (userRoles.Contains("User") && existingTodo.UserId == userId))
+            if (userRoles!.Contains("Admin") || (userRoles.Contains("User") && existingTodo.UserId == userId))
             {
                 existingTodo.Title = updatedTodo.Title;
                 existingTodo.IsCompleted = updatedTodo.IsCompleted;
@@ -180,7 +180,7 @@ namespace Web_API_CRUD.Controllers
         public async Task<IActionResult> DeleteTodo(Guid id)
         {
             int? userId = null;
-            var userIdClaim = _httpContextAccessor.HttpContext.User.FindFirst("id")?.Value;
+            var userIdClaim = _httpContextAccessor.HttpContext?.User.FindFirst("id")?.Value;
             if (userIdClaim != null && int.TryParse(userIdClaim, out int parsedUserId))
             {
                 userId = parsedUserId;
@@ -194,9 +194,9 @@ namespace Web_API_CRUD.Controllers
             }
 
             // Get the user's roles from the claims
-            var userRoles = _httpContextAccessor.HttpContext.User.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList();
+            var userRoles = _httpContextAccessor.HttpContext?.User.FindAll("Role").Select(c => c.Value).ToList();
 
-            if (userRoles.Contains("Admin") || (userRoles.Contains("User") && todo.UserId == userId))
+            if (userRoles!.Contains("Admin") || (userRoles.Contains("User") && todo.UserId == userId))
             {
                 _context.Todos.Remove(todo);
                 await _context.SaveChangesAsync();

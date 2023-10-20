@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-public class UserAccessActionFilter : IAsyncActionFilter
+public class UserAccessActionFilter : IActionFilter
 {
     private readonly UserManager<User> _userManager;
     private readonly AppDbContext _context;
@@ -19,22 +19,28 @@ public class UserAccessActionFilter : IAsyncActionFilter
         _context = context;
     }
 
-    public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+    public void OnActionExecuted(ActionExecutedContext context)
     {
-        if (context.HttpContext.User.Identity.IsAuthenticated)
+       
+    }
+
+    public void OnActionExecuting(ActionExecutingContext context)
+    {
+        if (context.HttpContext.User.Identity!.IsAuthenticated)
         {
             var userId = context.HttpContext.User.FindFirst("id")?.Value;
-            var todoIdString = context.RouteData.Values["Id"]?.ToString(); 
+            var todoIdString = context.RouteData.Values["Id"]?.ToString();
 
             if (!string.IsNullOrEmpty(userId) && Guid.TryParse(todoIdString, out Guid todoId))
             {
-                var user = await _userManager.FindByIdAsync(userId);
+                var user = _userManager.FindByIdAsync(userId).Result;
 
-                var roles = await _userManager.GetRolesAsync(user);
+                var roles = _userManager.GetRolesAsync(user).Result;
 
                 if (!roles.Contains("Admin"))
                 {
-                    var todo = await GetUserTodoById(user, todoId);
+                    var todo = GetUserTodoById(user, todoId);
+
 
                     if (todo == null || todo.UserId != user.Id)
                     {
@@ -43,15 +49,16 @@ public class UserAccessActionFilter : IAsyncActionFilter
                     }
                 }
             }
-      }
+        }
     }
 
-    private async Task<TodoItem> GetUserTodoById(User user, Guid todoId)
-    {
-        var todo = await _context.Todos
-            .Where(t => t.Id == todoId && t.UserId == user.Id)
-            .FirstOrDefaultAsync();
 
-        return todo;
+    private TodoItem GetUserTodoById(User user, Guid todoId)
+    {
+        var todo =  _context.Todos
+            .Where(t => t.Id == todoId && t.UserId == user.Id)
+            .FirstOrDefault();
+
+        return todo!;
     }
 }

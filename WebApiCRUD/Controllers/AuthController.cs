@@ -65,7 +65,7 @@ namespace WebApiCRUD.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User Registration Failed!" });
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User Registration Failed!" });
             }
@@ -76,7 +76,7 @@ namespace WebApiCRUD.Controllers
         {
             try
             {
-                var authResponse = await _authenticationService.Authenticate(loginUser.username, loginUser.Password, _httpContextAccessor.HttpContext);
+                var authResponse = await _authenticationService.Authenticate(loginUser.username, loginUser.Password, _httpContextAccessor.HttpContext!);
 
                 if (authResponse?.Token == null)
                 {
@@ -84,9 +84,9 @@ namespace WebApiCRUD.Controllers
 
                 }
 
-                return StatusCode(StatusCodes.Status201Created, new Response { Status = authResponse?.Token, Message = "Login Successfull!" });
+                return StatusCode(StatusCodes.Status201Created, new Response { Status = authResponse?.Token!, Message = "Login Successfull!" });
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Login Failed" });
             }

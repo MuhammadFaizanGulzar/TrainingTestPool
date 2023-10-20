@@ -84,7 +84,7 @@ if (app.Environment.IsDevelopment())
     app.UseRouting();
     app.UseAuthentication();    
     app.UseAuthorization();
-    app.UseMiddleware<VerifyTokenMiddleware>();
+    //app.UseMiddleware<VerifyTokenMiddleware>();
     
 
 }
