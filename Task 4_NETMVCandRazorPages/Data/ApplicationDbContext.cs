@@ -13,7 +13,7 @@ namespace Task_4_NETMVCandRazorPages.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
            : base(options)
         {
-        
+            //Database.SetCommandTimeout(30);
         }
 
         public DbSet<Item> Items { get; set; }
