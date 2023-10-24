@@ -9,6 +9,7 @@ namespace Task_4_NETMVCandRazorPages.Pages
     {
         private readonly ILogger<PrivacyModel> _logger;
 
+        
         public PrivacyModel(ILogger<PrivacyModel> logger)
         {
             _logger = logger;

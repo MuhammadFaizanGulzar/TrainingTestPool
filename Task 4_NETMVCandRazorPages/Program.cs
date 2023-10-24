@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using Task_4_NETMVCandRazorPages.Data;
 
@@ -17,9 +18,16 @@ builder.Services.AddIdentity<IdentityUser , IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.ConfigureApplicationCookie(config =>
+//builder.Services.ConfigureApplicationCookie(config =>
+//{
+//    config.LoginPath = "/Login";
+//});
+
+builder.Services.ConfigureApplicationCookie(options =>
 {
-    config.LoginPath = "/Login";
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(45);
+    options.LoginPath = "/Login";
 });
 
 var app = builder.Build();
@@ -33,11 +41,14 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
+
+
 
 app.MapRazorPages();
 

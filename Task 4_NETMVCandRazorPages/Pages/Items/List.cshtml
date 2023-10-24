@@ -1,0 +1,44 @@
+﻿@page
+@model Task_4_NETMVCandRazorPages.Pages.Items.ListModel
+@{
+}
+
+<h1 class="mb-3">List of Items</h1>
+
+@if (Model.Items != null && Model.Items.Any()){
+
+    <form asp-page="./List" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Find by name:
+                <input type="text" name="SearchString" value="@Model.Items" />
+                <input type="submit" value="Search" class="btn btn-primary" /> |
+                <a asp-page="./List">Back to full List</a>
+            </p>
+        </div>
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th> </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>
+                        <a href = "/Items/Edit/@item.Id" class="btn btn-dark">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+}

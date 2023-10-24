@@ -23,7 +23,7 @@ namespace Task_4_NETMVCandRazorPages.Pages
         {
 
 
-            returnUrl ??= Url.Content("~/");
+            //returnUrl ??= Url.Content("~/");
 
             if (ModelState.IsValid)
             {
