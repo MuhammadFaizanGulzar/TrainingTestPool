@@ -26,7 +26,7 @@ namespace Task_4_NETMVCandRazorPages.Pages.Items
 
         }
 
-        public void OnPost()
+        public IActionResult OnPost()
         {
             var itemDomainModel = new Item
             {
@@ -37,6 +37,8 @@ namespace Task_4_NETMVCandRazorPages.Pages.Items
             dbContext.SaveChanges();
 
             ViewData["Message"] = "Item Created Successfully!";
+
+            return RedirectToPage("/Items/List");
         }
     }
 }

@@ -38,7 +38,9 @@ namespace Task_4_NETMVCandRazorPages.Pages.Items
 
             CurrentSort = sortOrder;
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            //NameSort = sortOrder == "name_desc" ? "descending" : "ascending";
             DescriptionSort = String.IsNullOrEmpty(sortOrder) ? "description_desc" : "";
+            //DescriptionSort = sortOrder == "description_desc" ? "descending" : "ascending";
 
             if (searchString != null)
             {

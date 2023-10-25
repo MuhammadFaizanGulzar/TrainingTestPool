@@ -20,22 +20,46 @@
         </div>
     </form>
     <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>
-                    <a asp-page="./List" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter">
-                        @Html.DisplayNameFor(model => model.Items[0].Name)
-                    </a>
-                </th>
-                <th>
-                    <a asp-page="./List" asp-route-sortOrder="@Model.DescriptionSort" asp-route-currentFilter="@Model.CurrentFilter">
-                        @Html.DisplayNameFor(model => model.Items[0].Description)
-                    </a>
-                </th>
-                <th> </th>
-            </tr>
-        </thead>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>
+                <a asp-page="./List" asp-route-sortOrder="@Model.NameSort" asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Items[0].Name)
+                    @if (Model.NameSort == "name_asc")
+                    {
+                        <i class="fas fa-sort-up"></i>
+                    }
+                    else if (Model.NameSort == "name_desc")
+                    {
+                        <i class="fas fa-sort-down"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-sort"></i>
+                    }
+                </a>
+            </th>
+            <th>
+                <a asp-page="./List" asp-route-sortOrder="@Model.DescriptionSort" asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Items[0].Description)
+                    @if (Model.DescriptionSort == "description_asc")
+                    {
+                        <i class="fas fa-sort-up"></i>
+                    }
+                    else if (Model.DescriptionSort == "description_desc")
+                    {
+                        <i class="fas fa-sort-down"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-sort"></i>
+                    }
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
         <tbody>
             @foreach (var item in Model.Items) @* Use .Items to access the paginated list *@
             {

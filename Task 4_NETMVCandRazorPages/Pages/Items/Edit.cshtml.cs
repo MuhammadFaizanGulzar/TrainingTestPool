@@ -33,7 +33,7 @@ namespace Task_4_NETMVCandRazorPages.Pages.Items
             }
         }
 
-        public void OnPostUpdate()
+        public IActionResult OnPostUpdate()
         {
 
             if(editItemView!= null)
@@ -48,10 +48,12 @@ namespace Task_4_NETMVCandRazorPages.Pages.Items
                     dbContext.SaveChanges();
 
                     ViewData["Message"] = "Item Updates Successfully";
-                    
+
+               
+
                 }
             }
-      
+            return RedirectToPage("/Items/List");
         }
 
         public IActionResult OnPostDelete()
