@@ -22,8 +22,6 @@ namespace Task_4_NETMVCandRazorPages.Pages
         }
         public async Task<IActionResult> OnPostAsync(string? returnUrl = null)
         {
-
-
             //returnUrl ??= Url.Content("~/");
             
             if (ModelState.IsValid)
@@ -44,7 +42,6 @@ namespace Task_4_NETMVCandRazorPages.Pages
                 {
                     ErrorMessage = "Username or Password is Incorrect";
                 }
-                //ModelState.AddModelError("", "Username or Password is Incorrect");
 
             }
             return Page();
