@@ -5,6 +5,9 @@
 
 <h1 class="mb-3">List of Items</h1>
 
+<p>
+    <a asp-page="AddItem">Create New Item</a>
+</p>
 
     <form asp-page="./List" method="get">
         <div class="form-actions no-color">
@@ -49,7 +52,6 @@
     </table>
 
 
-
 @{
     var prevDisabled = !Model.Items.HasPreviousPage ? "disabled" : "";
     var nextDisabled = !Model.Items.HasNextPage ? "disabled" : "";
@@ -62,6 +64,18 @@
    class="btn btn-primary @prevDisabled">
     Previous
 </a>
+
+@foreach (var pageNumber in Model.Items.PageNumbers)
+{
+    <a asp-page="./List"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@pageNumber"
+   asp-route-currentFilter="@Model.CurrentFilter"
+       class="btn btn-secondary @(pageNumber == Model.Items.PageIndex ? "active" : "")">
+        @pageNumber
+    </a>
+}
+
 <a asp-page="./List"
    asp-route-sortOrder="@Model.CurrentSort"
    asp-route-pageIndex="@(Model.Items.PageIndex + 1)"

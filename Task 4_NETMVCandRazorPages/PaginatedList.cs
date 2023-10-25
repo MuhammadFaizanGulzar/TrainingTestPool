@@ -31,6 +31,13 @@ namespace Task_4_NETMVCandRazorPages.Helpers
                 .Take(pageSize).ToListAsync();
             return new PaginatedList<T>(items, count, pageIndex, pageSize);
         }
+        public IEnumerable<int> PageNumbers
+        {
+            get
+            {
+                return Enumerable.Range(1, TotalPages);
+            }
+        }
     }
 }
 
