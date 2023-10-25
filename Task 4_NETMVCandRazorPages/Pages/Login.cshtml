@@ -1,6 +1,7 @@
 ﻿@page
 @model Task_4_NETMVCandRazorPages.Pages.LoginModel
 @{
+   
 }
 
 <div class="container mt-5">
@@ -17,6 +18,9 @@
                     <label class="form-label" asp-for="Model.Password">Password</label>
                     <input type="password" asp-for="Model.Password" class="form-control" />
                     <span asp-validation-for="Model.Password" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <span class="text-danger">@Model.ErrorMessage</span> 
                 </div>
                 <div class="mb-3 form-check">
              

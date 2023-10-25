@@ -17,14 +17,20 @@
             <div class="mb-3">
                 <button type="submit" class="btn btn-primary">Upload</button>
             </div>
+      
         </form>
     </div>
+    <div id="messageContainer"></div>
 </div>
+
 <script>
     document.querySelector('form').addEventListener('submit', function (e) {
         const fileInput = document.querySelector('input[type="file"]');
         const fileName = fileInput.value;
-        if (fileName) {
+        if (!fileName) {
+            e.preventDefault();
+            alert('Please select a file to upload.');
+        } else {
             const fileExtension = fileName.split('.').pop().toLowerCase();
             if (fileExtension !== 'xls' && fileExtension !== 'xlsx') {
                 e.preventDefault();
@@ -32,4 +38,11 @@
             }
         }
     });
+
+    // Display the message from TempData
+    const message = '@TempData["Message"]';
+    if (message) {
+        document.getElementById('message').innerHTML = message;
+        document.getElementById('message').style.display = 'block';
+    }
 </script>

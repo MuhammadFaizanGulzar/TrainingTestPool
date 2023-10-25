@@ -11,6 +11,7 @@ namespace Task_4_NETMVCandRazorPages.Pages
 
         [BindProperty]
         public Login Model { get; set; }
+        public string ErrorMessage { get; set; }
 
         public LoginModel(SignInManager<IdentityUser> signInManager)
         {
@@ -24,7 +25,7 @@ namespace Task_4_NETMVCandRazorPages.Pages
 
 
             //returnUrl ??= Url.Content("~/");
-
+            
             if (ModelState.IsValid)
             {
                 var identityResult = await signInManager.PasswordSignInAsync(Model.Email, Model.Password, Model.RememberMe, false);
@@ -39,7 +40,12 @@ namespace Task_4_NETMVCandRazorPages.Pages
                         return RedirectToPage(returnUrl);
                     }
                 }
-                ModelState.AddModelError("", "Username or Password is Incorrect");
+                else
+                {
+                    ErrorMessage = "Username or Password is Incorrect";
+                }
+                //ModelState.AddModelError("", "Username or Password is Incorrect");
+
             }
             return Page();
         }
