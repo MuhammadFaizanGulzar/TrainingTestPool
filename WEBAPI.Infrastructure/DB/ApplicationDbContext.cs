@@ -203,5 +203,34 @@ namespace WEBAPI.Infrastructure.DB
 
 
         }
+
+        public int ExecuteStoredProcedure(string procedureName, params IDataParameter[] sqlParams)
+        {
+            int rows = -1;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand(procedureName, conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        if (sqlParams != null)
+                        {
+                            cmd.Parameters.AddRange(sqlParams);
+                        }
+
+                        rows = cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+            }
+
+            return rows;
+        }
     }
 }

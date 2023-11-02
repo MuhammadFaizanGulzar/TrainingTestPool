@@ -41,10 +41,12 @@ namespace WEBAPI.Infrastructure.Service
 
         public bool CreateItem(Item item)
         {
+            item.Id = Guid.NewGuid();
             string query = "insert into Items (Id, Name, Description) values (@Id, @Name, @Description);";
             var parameters = new IDataParameter[]
             {
-            new SqlParameter("@Id", item.Id),
+     
+            new SqlParameter("@Id", SqlDbType.UniqueIdentifier) { Value = item.Id },
             new SqlParameter("@Name", item.Name),
             new SqlParameter("@Description", item.Description),
     
@@ -78,17 +80,29 @@ namespace WEBAPI.Infrastructure.Service
                 Description = row["Description"].ToString()
             };
         }
+        //public bool UpdateItem(Guid id, Item item)
+        //{
+        //    string query = "update Items set Name =@Name, Description =@Description where Id = @Id";
+        //    var parameters = new IDataParameter[]
+        //    {
+        //    new SqlParameter("@Id", id),
+        //    new SqlParameter("@Name", item.Name),
+        //    new SqlParameter("@Description", item.Description),
+        //    };
+
+        //    return AppDb.ExecuteData(query, parameters) > 0;
+        //}
         public bool UpdateItem(Guid id, Item item)
         {
-            string query = "update Items set Name =@Name, Description =@Description where Id = @Id";
+            string updateProcedureName = "UpdateItem";
             var parameters = new IDataParameter[]
             {
-            new SqlParameter("@Id", id),
-            new SqlParameter("@Name", item.Name),
-            new SqlParameter("@Description", item.Description),
+        new SqlParameter("@Id", id),
+        new SqlParameter("@Name", item.Name),
+        new SqlParameter("@Description", item.Description),
             };
 
-            return AppDb.ExecuteData(query, parameters) > 0;
+            return AppDb.ExecuteStoredProcedure(updateProcedureName, parameters) > 0;
         }
 
         public bool DeleteItem(Guid id)

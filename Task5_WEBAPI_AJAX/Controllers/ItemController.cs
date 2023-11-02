@@ -12,8 +12,8 @@ using WEBAPI.Infrastructure.DB;
 
 namespace Task5_WEBAPI_AJAX.Controllers
 {
-    [ApiController]
     [Authorize]
+    [ApiController]
     [Route("[controller]")]
 
     public class ItemController : Controller
@@ -61,6 +61,21 @@ namespace Task5_WEBAPI_AJAX.Controllers
                 return NotFound(new { Result = "something went wrong" });
             }
         }
+
+        //[HttpPut("updateItem/{id}")]
+        //public ActionResult Put(Guid id, [FromBody] Item item)
+        //{
+        //    bool updated = _itemService.UpdateItem(id, item);
+
+        //    if (updated)
+        //    {
+        //        return Ok(new { Result = "Updated" });
+        //    }
+        //    else
+        //    {
+        //        return NotFound(new { Result = "Item not found or something went wrong" });
+        //    }
+        //}
 
         [HttpPut("updateItem/{id}")]
         public ActionResult Put(Guid id, [FromBody] Item item)

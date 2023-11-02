@@ -18,6 +18,7 @@ using WEBAPI.Infrastructure.DB;
 using Microsoft.Extensions.Options;
 using WEBAPI.Domain.Helpers;
 using System.Security.Cryptography;
+using Microsoft.Extensions.Configuration;
 
 namespace WEBAPI.Infrastructure.Service
 {
@@ -25,14 +26,16 @@ namespace WEBAPI.Infrastructure.Service
     {
         private List<User> users;
         ApplicationDbContext AppDb;
+        private readonly IConfiguration _configuration;
 
         private readonly AppSettings _appSettings;
 
-        public UserService(IOptions<AppSettings> appSettings)
+        public UserService(IOptions<AppSettings> appSettings, IConfiguration configuration)
         {
             _appSettings = appSettings.Value;
             AppDb = new ApplicationDbContext(_appSettings.ConnectionString);
             users = AppDb.GetUsers();
+            _configuration = configuration;
         }
 
 
@@ -46,20 +49,22 @@ namespace WEBAPI.Infrastructure.Service
             }
 
             // Generate a strong key for token generation (256 bits)
-            byte[] keyBytes = Generate256BitKey();
-            var key = new SymmetricSecurityKey(keyBytes);
+            //byte[] keyBytes = Generate256BitKey();
+      
+            //var key = new SymmetricSecurityKey(keyBytes);
 
             // Authentication successful, generate JWT token
             var tokenHandler = new JwtSecurityTokenHandler();
-
+            var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Secret"]!);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-            new Claim(ClaimTypes.Name, user.Id.ToString())
+                  new Claim("UserId", user.Id.ToString()),
+                  new Claim("UserName", user.Username.ToString()),
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
-                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -75,7 +80,7 @@ namespace WEBAPI.Infrastructure.Service
         {
             using (var rng = new RNGCryptoServiceProvider())
             {
-                byte[] key = new byte[32]; // 32 bytes = 256 bits
+                byte[] key = new byte[64]; // 32 bytes = 256 bits
                 rng.GetBytes(key);
                 return key;
             }
