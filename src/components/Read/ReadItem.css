@@ -1,0 +1,35 @@
+.read-items {
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Style for the heading */
+  .read-items h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  /* Style for the list */
+  .read-items ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  /* Style for list items */
+  .read-items li {
+    margin: 8px 0;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  /* Style for item details */
+  .read-items li span {
+    font-weight: bold;
+  }
