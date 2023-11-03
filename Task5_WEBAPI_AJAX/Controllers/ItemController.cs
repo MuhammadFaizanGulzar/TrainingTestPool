@@ -1,14 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System.Data;
 using WEBAPI.Application.Interfaces;
-using WEBAPI.Domain.Helpers;
 using WEBAPI.Domain.Models;
-using WEBAPI.Infrastructure.DB;
 
 namespace Task5_WEBAPI_AJAX.Controllers
 {
@@ -61,21 +54,6 @@ namespace Task5_WEBAPI_AJAX.Controllers
                 return NotFound(new { Result = "something went wrong" });
             }
         }
-
-        //[HttpPut("updateItem/{id}")]
-        //public ActionResult Put(Guid id, [FromBody] Item item)
-        //{
-        //    bool updated = _itemService.UpdateItem(id, item);
-
-        //    if (updated)
-        //    {
-        //        return Ok(new { Result = "Updated" });
-        //    }
-        //    else
-        //    {
-        //        return NotFound(new { Result = "Item not found or something went wrong" });
-        //    }
-        //}
 
         [HttpPut("updateItem/{id}")]
         public ActionResult Put(Guid id, [FromBody] Item item)

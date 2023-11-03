@@ -7,8 +7,9 @@ using WEBAPI.Domain.Entities;
 
 namespace WEBAPI.Application.Interfaces
 {
-    public interface IUserService
-    { 
-        IEnumerable<User> GetAll();
+    public interface IAuthService
+    {
+        User Authenticate(string username, string password);
+        string Register(User user);
     }
 }

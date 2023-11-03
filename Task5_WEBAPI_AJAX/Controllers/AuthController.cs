@@ -16,10 +16,12 @@ namespace Task5_WEBAPI_AJAX.Controllers
     public class AuthController : ControllerBase
     {
         private IUserService _userService;
+        private IAuthService _authService;
 
-        public AuthController(IUserService userService)
+        public AuthController(IUserService userService, IAuthService authService)
         {
             _userService = userService;
+            _authService = authService;
         }
 
 
@@ -27,7 +29,7 @@ namespace Task5_WEBAPI_AJAX.Controllers
         [HttpPost("Login")]
         public IActionResult Authenticate([FromBody] LoginRequest userParam)
         {
-            var user = _userService.Authenticate(userParam.Username, userParam.Password);
+            var user = _authService.Authenticate(userParam.Username, userParam.Password);
 
             if (user == null)
             {
@@ -45,7 +47,7 @@ namespace Task5_WEBAPI_AJAX.Controllers
         [HttpPost("RegisterUser")]
         public IActionResult RegisterUser([FromBody] User userParam)
         {
-            string message = _userService.Register(userParam);
+            string message = _authService.Register(userParam);
             return Ok("message=" + message);
         }
 

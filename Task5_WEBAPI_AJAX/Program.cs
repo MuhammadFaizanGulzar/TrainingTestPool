@@ -54,6 +54,7 @@ var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Secret"]);
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 var app = builder.Build();

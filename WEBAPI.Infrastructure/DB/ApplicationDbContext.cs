@@ -23,6 +23,40 @@ namespace WEBAPI.Infrastructure.DB
         }
 
 
+        //public List<User> GetUsers()
+        //{
+        //    List<User> _userDetails = new List<User>();
+        //    string connectionString = ConnectionString;
+
+        //    using (SqlConnection connection = new SqlConnection(connectionString))
+        //    {
+        //        connection.Open();
+
+        //        string sql = "SELECT * FROM Users"; 
+
+        //        using (SqlCommand command = new SqlCommand(sql, connection))
+        //        {
+        //            using (SqlDataReader reader = command.ExecuteReader())
+        //            {
+        //                while (reader.Read())
+        //                {
+        //                    User user = new User
+        //                    {
+        //                        Id = (int)reader["Id"],               
+        //                        Username = reader["Username"].ToString(),
+        //                        PasswordHash = reader["PasswordHash"].ToString(),
+        //                        Email = reader["Email"].ToString(),
+
+        //                    };
+
+        //                    _userDetails.Add(user);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    return _userDetails;
+        //}
+
         public List<User> GetUsers()
         {
             List<User> _userDetails = new List<User>();
@@ -32,21 +66,20 @@ namespace WEBAPI.Infrastructure.DB
             {
                 connection.Open();
 
-                string sql = "SELECT * FROM Users"; // Replace YourTableName with your actual table name
-
-                using (SqlCommand command = new SqlCommand(sql, connection))
+                using (SqlCommand command = new SqlCommand("GetUsers", connection))
                 {
+                    command.CommandType = CommandType.StoredProcedure;
+
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             User user = new User
                             {
-                                Id = (int)reader["Id"],               
+                                Id = (int)reader["Id"],
                                 Username = reader["Username"].ToString(),
                                 PasswordHash = reader["PasswordHash"].ToString(),
                                 Email = reader["Email"].ToString(),
-                          
                             };
 
                             _userDetails.Add(user);
@@ -85,39 +118,10 @@ namespace WEBAPI.Infrastructure.DB
                 }
             }
         }
-        private static List<T> ConvertDataTable<T>(DataTable dt)
-        {
-            List<T> data = new List<T>();
-            foreach (DataRow row in dt.Rows)
-            {
-                T item = GetItem<T>(row);
-                data.Add(item);
-            }
-            return data;
-        }
-        private static T GetItem<T>(DataRow dr)
-        {
-            Type temp = typeof(T);
-            T obj = Activator.CreateInstance<T>();
-
-            foreach (DataColumn column in dr.Table.Columns)
-            {
-                foreach (PropertyInfo pro in temp.GetProperties())
-                {
-                    if (pro.Name.ToLower() == column.ColumnName.ToLower())
-                        pro.SetValue(obj, dr[column.ColumnName], null);
-                    else
-                        continue;
-                }
-            }
-            return obj;
-        }
 
 
         //User Authentication and Authorization//
 
-
-        //public static string sqlDataSource = "Server=.;Database=WEBAPIAJAXPROJ;TrustServerCertificate=True;Integrated Security=true; MultipleActiveResultSets=true";
 
         public DataTable GetData(string str, params IDataParameter[] parameters)
         {
