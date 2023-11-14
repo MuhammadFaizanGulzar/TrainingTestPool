@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitialSetup", "InitialSetup\InitialSetup.csproj", "{D1DC2A63-FF7A-4336-8459-A1109F4DDDFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InitialSetup", "InitialSetup\InitialSetup.csproj", "{D1DC2A63-FF7A-4336-8459-A1109F4DDDFB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "S3FileUpload", "S3FileUpload\S3FileUpload.csproj", "{5079E449-6C1D-4D72-9290-125C609BA3F6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task6_AWS", "Task6_GettingStartedwithAWS\Task6_AWS.csproj", "{65E08824-B4C2-44B7-AE6C-6E900ED5A29D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{D1DC2A63-FF7A-4336-8459-A1109F4DDDFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1DC2A63-FF7A-4336-8459-A1109F4DDDFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1DC2A63-FF7A-4336-8459-A1109F4DDDFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5079E449-6C1D-4D72-9290-125C609BA3F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5079E449-6C1D-4D72-9290-125C609BA3F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5079E449-6C1D-4D72-9290-125C609BA3F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5079E449-6C1D-4D72-9290-125C609BA3F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65E08824-B4C2-44B7-AE6C-6E900ED5A29D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65E08824-B4C2-44B7-AE6C-6E900ED5A29D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65E08824-B4C2-44B7-AE6C-6E900ED5A29D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65E08824-B4C2-44B7-AE6C-6E900ED5A29D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
