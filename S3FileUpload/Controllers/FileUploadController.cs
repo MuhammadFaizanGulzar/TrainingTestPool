@@ -6,14 +6,14 @@ namespace S3FileUpload.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class FileUploadController : ControllerBase
     {
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<FileUploadController> _logger;
         private readonly IStorageService _storageService;
         private readonly IConfiguration _config;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, IStorageService storageService, IConfiguration config)
+        public FileUploadController(ILogger<FileUploadController> logger, IStorageService storageService, IConfiguration config)
         {
             _logger = logger;
             _storageService = storageService;
