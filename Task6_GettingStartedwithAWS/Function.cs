@@ -45,7 +45,6 @@ namespace Task6_AWS
                     }
 
              
-
                     var response = await S3Client.GetObjectMetadataAsync(s3Event.Bucket.Name, s3Event.Object.Key);
                     context.Logger.LogInformation($"Hello, bucket: {s3Event.Bucket.Name} and filename: {s3Event.Object.Key}");
                     context.Logger.LogInformation(response.Headers.ContentType);

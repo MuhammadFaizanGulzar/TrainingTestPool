@@ -39,7 +39,7 @@ namespace S3FileUpload.Controllers
                 Name = objName
 
             };
-            var Cred = new AwsCredentials()
+            var Cred = new awsCredentials()
             {
                 AwsKey = _config["AwsConfiguration:AWSAccesskey"],
                 AwsSecretKey = _config["AwsConfiguration:AWSSecretKey"]
