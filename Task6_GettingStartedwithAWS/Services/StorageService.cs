@@ -8,7 +8,7 @@ namespace Task6_GettingStartedwithAWS.Services;
 
 public class StorageService : IStorageService
 {
-    public async Task<S3ResponseDto> UploadFileAsync(S3Object s3Object, AwsCredentials awsCredentials)
+    public async Task<S3ResponseDto> UploadFileAsync(S3Object s3Object, awsCredentials awsCredentials)
     {
         //Adding AwsCredentials
         var credentials = new BasicAWSCredentials(awsCredentials.AwsKey, awsCredentials.AwsSecretKey);

@@ -3,12 +3,8 @@ using Amazon.SecretsManager;
 using Amazon.SecretsManager.Model;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Task6_AWS.Helper
 {
