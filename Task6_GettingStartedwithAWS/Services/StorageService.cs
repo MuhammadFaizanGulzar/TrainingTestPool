@@ -1,11 +1,7 @@
 ﻿using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Transfer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 using Task6_GettingStartedwithAWS.Models;
 
 namespace Task6_GettingStartedwithAWS.Services;
@@ -45,7 +41,7 @@ public class StorageService : IStorageService
             // Actually uploading file to s3
             await transferutility.UploadAsync(uploadRequest);
 
-            response.StatusCode = 200;
+            response.StatusCode = (int)HttpStatusCode.OK;
             response.Message = $"{s3Object.Name} has been uploaded successfully";
         }
         catch(AmazonS3Exception ex)
@@ -56,7 +52,7 @@ public class StorageService : IStorageService
         }
         catch(Exception ex)
         {
-            response.StatusCode = 500;
+            response.StatusCode = (int)HttpStatusCode.InternalServerError;
             response.Message = ex.Message;
         }
 

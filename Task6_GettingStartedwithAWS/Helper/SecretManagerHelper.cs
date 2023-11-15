@@ -14,13 +14,13 @@ namespace Task6_AWS.Helper
 {
     public class SecretsManagerHelper
     {
-        private readonly IAmazonSecretsManager secretsManager;
-        private readonly IConfiguration configuration;
+        private readonly IAmazonSecretsManager _secretsManager;
+        private readonly IConfiguration _configuration;
 
         public SecretsManagerHelper(IAmazonSecretsManager secretsManager, IConfiguration configuration)
         {
-            this.secretsManager = secretsManager;
-            this.configuration = configuration;
+            this._secretsManager = secretsManager;
+            this._configuration = configuration;
         }
 
         public static async Task<string?> GetSecret()
@@ -50,13 +50,5 @@ namespace Task6_AWS.Helper
             return null;
         }
 
-        public IConfiguration GetConfiguration()
-        {
-            // Your code to build and return IConfiguration
-            return new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .Build();
-        }
     }
 }

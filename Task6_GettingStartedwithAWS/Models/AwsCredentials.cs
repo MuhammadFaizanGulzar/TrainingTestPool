@@ -8,8 +8,8 @@ namespace Task6_GettingStartedwithAWS.Models
 {
     public class AwsCredentials
     {
-        public string AwsKey { get; set; } = "";
-        public string AwsSecretKey { get; set; } = "";
+        public string AwsKey { get; set; } = string.Empty;
+        public string AwsSecretKey { get; set; } = string.Empty;
 
     }
 }

@@ -2,12 +2,8 @@ using Amazon.Lambda.Core;
 using Amazon.Lambda.S3Events;
 using Amazon.S3;
 using Amazon.S3.Model;
-using Amazon.SecretsManager;
-using Amazon.SecretsManager.Model;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System.Reflection;
 using Task6_AWS.Helper;
 using Task6_GettingStartedwithAWS.Models;
 
@@ -18,15 +14,10 @@ namespace Task6_AWS
     public class Function
     {
         private IAmazonS3 S3Client { get; set; }
-        private IAmazonSecretsManager SecretsManagerClient { get; set; }
-        private IConfiguration Configuration { get; set; }
-
 
         public Function()
         {
             S3Client = new AmazonS3Client();
-
-            SecretsManagerClient = new AmazonSecretsManagerClient();
 
         }
 
@@ -44,7 +35,6 @@ namespace Task6_AWS
 
                 try
                 {
-
 
                     var file = await S3Client.GetObjectAsync(s3Event.Bucket.Name, s3Event.Object.Key);
                     // Check if file already exists
