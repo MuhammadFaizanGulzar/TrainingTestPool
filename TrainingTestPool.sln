@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InitialSetup", "InitialSetup\InitialSetup.csproj", "{D1DC2A63-FF7A-4336-8459-A1109F4DDDFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task7_Razor_AWS_SQS_SNS", "Task7_Razor_AWS_SQS_SNS\Task7_Razor_AWS_SQS_SNS.csproj", "{4C331981-FD23-400B-9805-227A2D4D6340}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Task7_Razor_AWS_SQS_SNS", "Task7_Razor_AWS_SQS_SNS\Task7_Razor_AWS_SQS_SNS.csproj", "{4C331981-FD23-400B-9805-227A2D4D6340}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
