@@ -1,7 +1,9 @@
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using Amazon.S3;
+using Amazon.SimpleNotificationService;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,16 @@ builder.Services.AddAWSService<IAmazonS3>(new AWSOptions
     Region = Amazon.RegionEndpoint.EUNorth1 // Replace with your AWS region, e.g., USWest2
 });
 
+// Add Amazon Simple Notification Service
+builder.Services.AddAWSService<IAmazonSimpleNotificationService>(new AWSOptions
+{
+    Credentials = new BasicAWSCredentials("AKIARKDSGBF6YGLNWV77", "I1PJCBwgV7B4abNb6Qb4aXlw60yBWmq8om/DmjEM"),
+    Region = Amazon.RegionEndpoint.EUNorth1 // Replace with your AWS region
+});
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole(); 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,13 +37,14 @@ if (!app.Environment.IsDevelopment())
 }
 
 
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseAuthorization();
+
+
 
 app.MapRazorPages();
 
