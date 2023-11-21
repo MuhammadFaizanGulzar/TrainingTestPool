@@ -2,6 +2,7 @@ using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.SimpleNotificationService;
+using Amazon.SQS;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Logging;
 
@@ -22,6 +23,10 @@ builder.Services.AddAWSService<IAmazonSimpleNotificationService>(new AWSOptions
     Credentials = new BasicAWSCredentials("AKIARKDSGBF6YGLNWV77", "I1PJCBwgV7B4abNb6Qb4aXlw60yBWmq8om/DmjEM"),
     Region = Amazon.RegionEndpoint.EUNorth1 // Replace with your AWS region
 });
+
+builder.Services.AddAWSService<IAmazonSQS>();
+builder.Services.AddLogging();
+
 
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole(); 
