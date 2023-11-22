@@ -9,6 +9,9 @@ using Amazon.SQS.Model;
 using Newtonsoft.Json;
 using Amazon.Lambda;
 using Amazon.Lambda.SQSEvents;
+using Microsoft.Data.SqlClient;
+using Task7AWS.Helper;
+using Task7AWS.Models;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
@@ -29,35 +32,45 @@ public class Function
 
     public async Task FunctionHandler(S3Event s3Event, ILambdaContext context)
     {
-        foreach (var record in s3Event.Records)
+        var eventRecords = s3Event.Records ?? new List<S3Event.S3EventNotificationRecord>();
+
+        foreach (var record in eventRecords)
         {
-            if (record.S3 != null && record.S3.Bucket != null)
+            var s3EventRecord = record.S3;
+            if (s3EventRecord == null)
             {
-                var bucketName = record.S3.Bucket.Name;
-                var key = record.S3.Object.Key;
-            
-                await TriggerLambdaFunctionAsync(bucketName, key);
- 
-                //context.Logger.LogInformation("Lambda function triggered Successfully");
-                //await SendToSqsQueue(bucketName, key);
+                continue;
+            }
 
-                //context.Logger.LogInformation("SQS Triggered");
+            try
+            {
+                var file = await _s3Client.GetObjectAsync(s3EventRecord.Bucket.Name, s3EventRecord.Object.Key);
+                var response = await _s3Client.GetObjectMetadataAsync(s3EventRecord.Bucket.Name, s3EventRecord.Object.Key);
+                context.Logger.LogInformation($"Hello, bucket: {s3EventRecord.Bucket.Name} and filename: {s3EventRecord.Object.Key}");
+                context.Logger.LogInformation(response.Headers.ContentType);
 
-                var processedData = ProcessFile(bucketName, key);
-                context.Logger.LogInformation(processedData);
+                using var reader = new StreamReader(file.ResponseStream);
+                var fileContents = await reader.ReadToEndAsync();
+                context.Logger.LogInformation(fileContents);
 
-                //context.Logger.LogInformation($"Processing file: {key} in bucket: {bucketName}");
+                var processedData = ProcessFile(s3EventRecord.Bucket.Name, s3EventRecord.Object.Key);
+
+                // Connect to SQL Server and store data
+                await StoreDataInSqlServer(fileContents, context);
+
+                await SendToSqsQueue(s3EventRecord.Bucket.Name, s3EventRecord.Object.Key);
+
                 await PublishToSns(processedData);
 
-                //context.Logger.LogInformation("Published message to SNS");
+                context.Logger.LogInformation("Processing completed");
             }
-            else
+            catch (Exception e)
             {
-                // Log a message or handle the case where S3 or Bucket is null
-                context.Logger.LogError("S3 or Bucket is null in the S3Event record.");
+                context.Logger.LogError($"Error processing S3 object {s3EventRecord.Object.Key}. {e.Message}");
+                context.Logger.LogError(e.StackTrace);
+                throw;
             }
         }
-
     }
     private async Task TriggerLambdaFunctionAsync(string bucketName, string key)
     {
@@ -79,6 +92,33 @@ public class Function
         {
             //_logger.Log($"Error triggering Lambda function: {ex.Message}");
             Console.WriteLine($"Error triggering Lambda function: {ex.Message}");
+        }
+    }
+
+    private async Task StoreDataInSqlServer(string fileContents, ILambdaContext context)
+    {
+        try
+        {
+            var connectionString = await SecretsManagerHelper.GetSecret();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+                string insertQuery = "INSERT INTO Users(Name, Email, Role) VALUES (@Name, @Email, @Role)";
+                var user = JsonConvert.DeserializeObject<Users>(fileContents);
+                using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@Name", user!.Name);
+                    command.Parameters.AddWithValue("@Email", user.Email);
+                    command.Parameters.AddWithValue("@Role", user.Role);
+
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            context.Logger.LogError($"Error storing data in SQL Server: {ex.Message}");
         }
     }
 
