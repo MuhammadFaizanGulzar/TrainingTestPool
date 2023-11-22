@@ -22,26 +22,35 @@ namespace Task7AWS.Helper
         public static async Task<string?> GetSecret()
         {
             var assemblyLocation = Assembly.GetExecutingAssembly().Location;
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Path.GetDirectoryName(assemblyLocation))
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true).Build();
+            string? basePath = Path.GetDirectoryName(assemblyLocation);
 
-            string dbName = config["Database"];
-            string secretName = config["SecretName"];
-            string region = config["Region"];
+            if (basePath != null)
+            {
+                var config = new ConfigurationBuilder()
+                    .SetBasePath(basePath)
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .Build();
 
-            using var client = new AmazonSecretsManagerClient(RegionEndpoint.GetBySystemName(region));
-            var request = new GetSecretValueRequest()
-            {
-                SecretId = secretName
-            };
-            var response = await client.GetSecretValueAsync(request);
-            var secretData = JsonConvert.DeserializeObject<Models.SecretCredentials>(response.SecretString);
-            if (secretData != null)
-            {
-                string connectionString = $"Server={secretData.Host};Database={dbName};User ID={secretData.Username};Password={secretData.Password};";
-                return connectionString;
+                string? dbName = config["Database"];
+                string? secretName = config["SecretName"];
+                string? region = config["Region"];
+
+                using var client = new AmazonSecretsManagerClient(RegionEndpoint.GetBySystemName(region));
+                var request = new GetSecretValueRequest()
+                {
+                    SecretId = secretName
+                };
+                var response = await client.GetSecretValueAsync(request);
+                var secretData = JsonConvert.DeserializeObject<Models.SecretCredentials>(response.SecretString);
+                if (secretData != null)
+                {
+                    string connectionString = $"Server={secretData.Host};Database={dbName};User ID={secretData.Username};Password={secretData.Password};";
+                    return connectionString;
+                }
             }
+
+
+     
             return null;
         }
 

@@ -12,6 +12,7 @@ using Amazon.Lambda.SQSEvents;
 using Microsoft.Data.SqlClient;
 using Task7AWS.Helper;
 using Task7AWS.Models;
+using System.Xml.Linq;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
@@ -53,7 +54,11 @@ public class Function
                 var fileContents = await reader.ReadToEndAsync();
                 context.Logger.LogInformation(fileContents);
 
+                
+
                 var processedData = ProcessFile(s3EventRecord.Bucket.Name, s3EventRecord.Object.Key);
+
+
 
                 // Connect to SQL Server and store data
                 await StoreDataInSqlServer(fileContents, context);
@@ -70,6 +75,35 @@ public class Function
                 context.Logger.LogError(e.StackTrace);
                 throw;
             }
+        }
+    }
+    private async Task StoreDataInSqlServer(string fileContents, ILambdaContext context)
+    {
+        try
+        {
+            //var connectionString = await SecretsManagerHelper.GetSecret();
+            var connectionString = "Server=database-1.ccyxixvgakuw.eu-north-1.rds.amazonaws.com;Database=Task6AWS;User ID=admin;Password=Password1;";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+                string insertQuery = "INSERT INTO Users(Name, Email, Role) VALUES (@Name, @Email, @Role)";
+                context.Logger.LogInformation($"File Contents: {fileContents}");
+                var user = JsonConvert.DeserializeObject<Users>(fileContents);
+
+                using (SqlCommand command = new SqlCommand(insertQuery, connection))
+                {
+                    command.Parameters.AddWithValue("@Name", user.Name);
+                    command.Parameters.AddWithValue("@Email", user.Email);
+                    command.Parameters.AddWithValue("@Role", user.Role);
+
+                    await command.ExecuteNonQueryAsync();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            context.Logger.LogError($"Error storing data in SQL Server: {ex.Message}");
         }
     }
     private async Task TriggerLambdaFunctionAsync(string bucketName, string key)
@@ -95,32 +129,7 @@ public class Function
         }
     }
 
-    private async Task StoreDataInSqlServer(string fileContents, ILambdaContext context)
-    {
-        try
-        {
-            var connectionString = await SecretsManagerHelper.GetSecret();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                await connection.OpenAsync();
-                string insertQuery = "INSERT INTO Users(Name, Email, Role) VALUES (@Name, @Email, @Role)";
-                var user = JsonConvert.DeserializeObject<Users>(fileContents);
-                using (SqlCommand command = new SqlCommand(insertQuery, connection))
-                {
-                    command.Parameters.AddWithValue("@Name", user!.Name);
-                    command.Parameters.AddWithValue("@Email", user.Email);
-                    command.Parameters.AddWithValue("@Role", user.Role);
-
-                    await command.ExecuteNonQueryAsync();
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            context.Logger.LogError($"Error storing data in SQL Server: {ex.Message}");
-        }
-    }
 
     private string ProcessFile(string bucket, string key)
     {
