@@ -35,16 +35,12 @@ public class Function
             {
                 var bucketName = record.S3.Bucket.Name;
                 var key = record.S3.Object.Key;
-
-
             
                 await TriggerLambdaFunctionAsync(bucketName, key);
-
-     
+ 
                 //context.Logger.LogInformation("Lambda function triggered Successfully");
-                await SendToSqsQueue(bucketName, key);
+                //await SendToSqsQueue(bucketName, key);
 
-    
                 //context.Logger.LogInformation("SQS Triggered");
 
                 var processedData = ProcessFile(bucketName, key);
@@ -62,45 +58,6 @@ public class Function
             }
         }
 
-
-
-        // After processing S3 events, poll the SQS queue
-        //await PollSqsQueue();
-    }
-
-    public async Task PollSqsQueueFunctionHandler(SQSEvent sqsEvent, ILambdaContext context)
-    {
-        string queueUrl = "https://sqs.eu-north-1.amazonaws.com/090433784189/task7-sqs-queue";
-        // ... (code for polling SQS and processing messages)
-        try
-        {
-            foreach (var record in sqsEvent.Records)
-            {
-                var messageBody = record.Body; // Get the message body
-
-                // Process the SQS message (replace this with your actual processing logic)
-                var processedData = ProcessSqsMessage(messageBody, context);
-                context.Logger.LogInformation($"Processed SQS message: {processedData}");
-
-                // Delete the message from the queue
-                await _sqsClient.DeleteMessageAsync(queueUrl, record.ReceiptHandle);
-            }
-        }
-        catch (Exception ex)
-        {
-            context.Logger.LogError($"Error processing SQS messages: {ex.Message}");
-        }
-    }
-
-    private string ProcessSqsMessage(string messageBody, ILambdaContext context)
-    {
-        // Replace this with your actual processing logic for SQS messages
-        // For example, you can log or store the file name and data
-        context.Logger.LogInformation($"Processed message: {messageBody}");
-
-        // Perform additional processing as needed
-
-        return "Processing completed"; // Adjust the return value as needed
     }
     private async Task TriggerLambdaFunctionAsync(string bucketName, string key)
     {
@@ -174,38 +131,5 @@ public class Function
         }
     }
 
-    private async Task PollSqsQueue()
-    {
-        try
-        {
-            // Specify the URL of your SQS queue
-            string queueUrl = "https://sqs.eu-north-1.amazonaws.com/090433784189/task7-sqs-queue";
-
-            var request = new ReceiveMessageRequest
-            {
-                QueueUrl = queueUrl,
-                MaxNumberOfMessages = 1,
-                WaitTimeSeconds = 10 // Adjust as needed
-            };
-
-            var response = await _sqsClient.ReceiveMessageAsync(request);
-
-            if (response != null && response.Messages != null && response.Messages.Any())
-            {
-                var message = response.Messages[0].Body;
-                // Process the message (your processed data)
-
-                // Delete the message from the queue
-                await _sqsClient.DeleteMessageAsync(queueUrl, response.Messages[0].ReceiptHandle);
-            }
-            else
-            {
-                Console.WriteLine("No messages received from the SQS queue.");
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error polling SQS queue: {ex.Message}");
-        }
-    }
+    
 }
