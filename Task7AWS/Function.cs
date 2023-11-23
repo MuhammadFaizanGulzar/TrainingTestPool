@@ -1,18 +1,15 @@
 using Amazon.Lambda.Core;
 using Amazon.Lambda.S3Events;
 using Amazon.S3;
-using Amazon.S3.Transfer;
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Newtonsoft.Json;
 using Amazon.Lambda;
-using Amazon.Lambda.SQSEvents;
 using Microsoft.Data.SqlClient;
-using Task7AWS.Helper;
 using Task7AWS.Models;
-using System.Xml.Linq;
+
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 

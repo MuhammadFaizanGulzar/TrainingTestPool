@@ -1,7 +1,10 @@
 ﻿@page
 @model Task7_Razor_AWS_SQS_SNS.Pages.FileUploadModel
 @{
+    var message = TempData["Message"] as string;
 }
+
+
 <div class="text-center">
     <h1 class="display-4">File Upload</h1>
 </div>
@@ -18,7 +21,7 @@
             </div>
         </form>
     </div>
-    <div id="messageContainer"></div>
+    <div id="messageContainer">@message</div>
 </div>
 
 <script>
@@ -37,10 +40,48 @@
         }
     });
 
-    // Display the message from TempData
-    const message = '@TempData["Message"]';
-    if (message) {
-        document.getElementById('message').innerHTML = message;
-        document.getElementById('message').style.display = 'block';
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.1501.0/aws-sdk.min.js"></script>
+<script>
+    // Handle incoming SNS messages
+    const handleSnsMessage = (message) => {
+        // Update your frontend UI with the received message
+        console.log('Received SNS message:', message);
+
+        // Display the message in the HTML
+        document.getElementById('messageContainer').innerHTML = message;
+    };
+
+    // Check for AWS SDK Availability
+    if (typeof AWS !== 'undefined') {
+        // Configure AWS SDK (ensure you have AWS credentials configured)
+        AWS.config.update({ region: 'eu-north-1' });
+
+        // Create an SNS instance
+        const sns = new AWS.SNS();
+
+        // Subscribe to the SNS topic
+        const snsTopicArn = 'arn:aws:sns:eu-north-1:090433784189:task7Sns'; // Replace with your SNS topic ARN
+
+        sns.subscribe(
+            {
+                Protocol: 'https', // HTTPS endpoint
+                TopicArn: snsTopicArn,
+                Endpoint: 'https://localhost:7010/fileupload', // Replace with your frontend endpoint
+            },
+            (err, data) => {
+                if (err) {
+                    console.error('Subscription error:', err);
+                } else {
+                    console.log('Subscription successful:', data);
+                }
+            }
+        );
+
+        // Handle incoming SNS messages
+        sns.on('message', handleSnsMessage);
+    } else {
+        console.error('AWS SDK is not available. Please make sure to include it in your project.');
     }
 </script>
