@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Task8_GettingStartedWithAzure": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7261",
+      "launchBrowser": false
+    }
+  }
+}
