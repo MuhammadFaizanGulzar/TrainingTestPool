@@ -1,0 +1,11 @@
+{
+    "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "DefaultEndpointsProtocol=https;AccountName=trainingtestpoolstorage;AccountKey=7aTc4nqLjbqLpRAu4EsjZGmfK/XbZKWLb+lz3oXkeIt20mTwDO/UmWmg/NoZk3FWiWXAoPQm4/q7+AStPiLICQ==;EndpointSuffix=core.windows.net",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "SqlConnectionString": "Server=tcp:azuretaskstraining.database.windows.net,1433;Initial Catalog=AzureTrainingTask;Persist Security Info=False;User ID=azureadmin;Password=@Password1;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
+    "Secretname": "Task8secret",
+    "KvUri": "https://Task8Keys.vault.azure.net"
+
+  }
+}
