@@ -32,9 +32,7 @@ namespace Task7_Razor_AWS_SQS_SNS.Pages
 
         public async Task<IActionResult> OnPostAsync(IFormFile file)
         {
-            if (file != null && file.Length > 0 &&
-                (Path.GetExtension(file.FileName).ToLower() == ".json") &&
-                (file.ContentType.ToLower() == "application/json"))
+            if (file != null && file.Length > 0 && (Path.GetExtension(file.FileName).ToLower() == ".json") && (file.ContentType.ToLower() == "application/json"))
             {
                 string bucketName = "task7-sqs-sns-bucket";
                 string key = "uploads/" + file.FileName;
