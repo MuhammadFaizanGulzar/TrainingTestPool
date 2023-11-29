@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Task9_AzureApplicationwithComponents": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7250",
+      "launchBrowser": false
+    }
+  }
+}

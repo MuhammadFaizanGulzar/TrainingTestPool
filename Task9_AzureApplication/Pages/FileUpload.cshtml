@@ -18,7 +18,6 @@
             </div>
         </form>
     </div>
-
 </div>
 
 <script>
@@ -35,5 +34,21 @@
                 alert('Please select a valid Json file.');
             }
         }
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/3.1.10/signalr.min.js"></script>
+
+<!-- Your custom script for SignalR integration -->
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").build();
+
+    connection.on("SendNotification", function (message) {
+        alert(message); // You can customize how to handle the notification
+    });
+
+    connection.start().then(function () {
+        console.log("SignalR connected");
+    }).catch(function (err) {
+        return console.error(err.toString());
     });
 </script>
