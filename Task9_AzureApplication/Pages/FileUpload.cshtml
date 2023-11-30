@@ -18,6 +18,14 @@
             </div>
         </form>
     </div>
+    <!-- Display processed data -->
+    @if (ViewData["ProcessedData"] != null)
+    {
+        <div class="mt-3">
+            <h3>Processed Data:</h3>
+            <pre>@Html.Raw(ViewData["ProcessedData"])</pre>
+        </div>
+    }
 </div>
 
 <script>
@@ -29,7 +37,7 @@
             alert('Please select a file to upload.');
         } else {
             const fileExtension = fileName.split('.').pop().toLowerCase();
-            if (fileExtension !== 'json' && fileExtension !== 'json') {
+            if (fileExtension !== 'json') {
                 e.preventDefault();
                 alert('Please select a valid Json file.');
             }

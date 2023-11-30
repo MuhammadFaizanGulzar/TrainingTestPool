@@ -69,21 +69,63 @@ namespace Task9_AzureApplication.Pages
                 await blob.UploadFromStreamAsync(stream);
             }
 
+
             // Send a message to Azure Service Bus with details about the uploaded file
             await SendMessageToServiceBus(blobName);
 
             // Optionally, you can perform additional processing here
 
+            // Retrieve processed data from Azure Function
+            var processedDataResponse = await RetrieveProcessedDataFromAzureFunction(blobName);
+
+            // Display data on the frontend
+            ViewData["ProcessedData"] = processedDataResponse;
 
             // Notify clients using SignalR
             await _hubContext.Clients.All.SendAsync("SendNotification", "Processing is complete!");
 
-
             // Redirect to a success page or perform other actions
-            return RedirectToPage("FileUpload");
+            return RedirectToPage("index");
         }
 
+        private async Task<string> RetrieveProcessedDataFromAzureFunction(string blobName)
+        {
+            try
+            {
+                // Construct the URL for your Azure Function endpoint
+                string requestUrl = "http://localhost:7250/api/ProcessFileFunction";
 
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    // Log the request URL
+                    Console.WriteLine($"Sending request to: {requestUrl}");
+
+                    // Make an HTTP GET request
+                    HttpResponseMessage response = await httpClient.GetAsync(requestUrl);
+
+                    // Log the response status code
+                    Console.WriteLine($"Response status code: {response.StatusCode}");
+
+                    // Check if the response is successful
+                    response.EnsureSuccessStatusCode();
+
+                    // Read the content from the response
+                    string content = await response.Content.ReadAsStringAsync();
+
+                    // Log the response content
+                    Console.WriteLine($"Response content: {content}");
+
+                    // Return the processed data
+                    return content;
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                // Log the exception or handle it accordingly
+                Console.WriteLine($"HTTP request failed: {ex.Message}");
+                throw;
+            }
+        }
         private async Task SendMessageToServiceBus(string blobName)
         {
             // Get the connection string for your Azure Service Bus namespace

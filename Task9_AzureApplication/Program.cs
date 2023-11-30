@@ -28,8 +28,8 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapRazorPages();
     endpoints.MapHub<NotificationHub>("/notificationHub");
-    // Other endpoint mappings...
 });
 
 app.MapRazorPages();
