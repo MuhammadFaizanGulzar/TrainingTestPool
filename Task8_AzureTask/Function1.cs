@@ -38,7 +38,7 @@ namespace Task8_AzureTask
             // Save the User object to the database
             SaveUserToDatabase(user, log);
 
-            // Continue with any additional logic or processing you need to do.
+       
         }
 
         private static async Task SaveUserToDatabase(Entity.User user, ILogger log)
@@ -50,9 +50,7 @@ namespace Task8_AzureTask
 
                 var client = new SecretClient(new Uri(kvUri), new DefaultAzureCredential());
                 var secret = await client.GetSecretAsync(secretName);
-
-
-                // You would replace this with your actual DbContext initialization logic
+  
                 var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                     .UseSqlServer(secret.Value.Value)
                     .Options;
