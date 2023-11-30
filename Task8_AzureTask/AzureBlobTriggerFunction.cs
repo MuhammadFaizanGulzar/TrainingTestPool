@@ -1,24 +1,20 @@
 using System;
 using System.IO;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
-using Microsoft.Azure.Documents;
-using Microsoft.Azure.Storage.Blob;
 using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Task8_AzureTask.Entity;
+using Task8_AzureTask.Model;
 
 namespace Task8_AzureTask
 {
-    public static class Function1
+    public static class AzureBlobTriggerFunction
     {
-        [FunctionName("Function1")]
-        public static void Run(
+        [FunctionName("AzureBlobTriggerFunction")]
+        public static async Task Run(
             [BlobTrigger("task8container/{name}.json", Connection = "AzureWebJobsStorage")] Stream myBlob,
             string name,
             ILogger log)
@@ -33,15 +29,15 @@ namespace Task8_AzureTask
             }
 
             // Deserialize the JSON content into a User object using JsonConvert
-            Entity.User user = JsonConvert.DeserializeObject<Entity.User>(jsonContent);
+            Users user = JsonConvert.DeserializeObject<Users>(jsonContent);
 
             // Save the User object to the database
-            SaveUserToDatabase(user, log);
+            await SaveUserToDatabase(user, log);
 
        
         }
 
-        private static async Task SaveUserToDatabase(Entity.User user, ILogger log)
+        private static async Task SaveUserToDatabase(Users user, ILogger log)
         {
             try
             {

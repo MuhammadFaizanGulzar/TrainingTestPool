@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Task8_AzureTask.Entity
+﻿namespace Task8_AzureTask.Model
 {
-    public class User
+    public class Users
     {
         public int Id { get; set; }
         public string Name { get; set; }

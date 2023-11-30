@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Task8_AzureTask.Entity;
+using Task8_AzureTask.Model;
 
 namespace Task8_AzureTask
 {
@@ -16,6 +16,6 @@ namespace Task8_AzureTask
         }
 
       
-        public DbSet<User> Users { get; set; }
+        public DbSet<Users> Users { get; set; }
     }
 }
