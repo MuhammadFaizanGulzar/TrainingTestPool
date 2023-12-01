@@ -15,11 +15,13 @@ namespace Task9_AzureApplication.Pages
     {
         private readonly IConfiguration _configuration;
         private readonly IHubContext<NotificationHub> _hubContext;
+        private readonly IHttpClientFactory _clientFactory;
 
-        public FileUploadModel(IConfiguration configuration, IHubContext<NotificationHub> hubContext)
+        public FileUploadModel(IConfiguration configuration, IHubContext<NotificationHub> hubContext, IHttpClientFactory clientFactory)
         {
             _configuration = configuration;
             _hubContext = hubContext;
+            _clientFactory = clientFactory;
         }
         public void OnGet()
         {
@@ -53,39 +55,16 @@ namespace Task9_AzureApplication.Pages
             // Get a reference to the blob
             CloudBlockBlob blob = container.GetBlockBlobReference(blobName);
 
-            // Check if the blob already exists
-            if (await blob.ExistsAsync())
-            {
-                // Optionally, you can perform additional logic here
-                // For example, you might want to create a backup of the existing file before replacing it.
+            // Read the content of the blob
+            string fileContent = await blob.DownloadTextAsync();
 
-                // Delete the existing blob before uploading the new file
-                await blob.DeleteIfExistsAsync();
-            }
+            // Use the fileContent as needed, for example, pass it to the view
+            ViewData["ProcessedData"] = fileContent;
 
-            // Upload the file to the blob
-            using (var stream = file.OpenReadStream())
-            {
-                await blob.UploadFromStreamAsync(stream);
-            }
+            TempData["ProcessedData"] = fileContent;
+            // ... rest of the code ...
 
-
-            // Send a message to Azure Service Bus with details about the uploaded file
-            await SendMessageToServiceBus(blobName);
-
-            // Optionally, you can perform additional processing here
-
-            // Retrieve processed data from Azure Function
-            var processedDataResponse = await RetrieveProcessedDataFromAzureFunction(blobName);
-
-            // Display data on the frontend
-            ViewData["ProcessedData"] = processedDataResponse;
-
-            // Notify clients using SignalR
-            await _hubContext.Clients.All.SendAsync("SendNotification", "Processing is complete!");
-
-            // Redirect to a success page or perform other actions
-            return RedirectToPage("index");
+            return RedirectToPage("FileUpload");
         }
 
         private async Task<string> RetrieveProcessedDataFromAzureFunction(string blobName)
