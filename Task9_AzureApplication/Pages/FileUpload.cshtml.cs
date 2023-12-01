@@ -37,19 +37,17 @@ namespace Task9_AzureApplication.Pages
                 return Page();
             }
 
-            // Get the connection string for your Azure Storage account
+            // Connection string for your Azure Storage account
             string storageConnectionString = _configuration.GetConnectionString("AzureStorageAccount");
 
             // Create a CloudStorageAccount object using the connection string
             CloudStorageAccount storageAccount = CloudStorageAccount.Parse(storageConnectionString);
 
-            // Create a CloudBlobClient object using the storage account
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
 
             // Get a reference to the container
             CloudBlobContainer container = blobClient.GetContainerReference("task9container");
 
-            // Create a unique name for the blob (you can customize this logic)
             string blobName = Path.GetFileName(file.FileName);
 
             // Get a reference to the blob
@@ -62,52 +60,20 @@ namespace Task9_AzureApplication.Pages
             ViewData["ProcessedData"] = fileContent;
 
             TempData["ProcessedData"] = fileContent;
-            // ... rest of the code ...
+
+            // Send a message to Azure Service Bus with details about the uploaded file
+            await SendMessageToServiceBus(blobName);
+
+            // Notify clients using SignalR
+            await _hubContext.Clients.All.SendAsync("SendNotification", "Processing is complete!");
 
             return RedirectToPage("FileUpload");
         }
 
-        private async Task<string> RetrieveProcessedDataFromAzureFunction(string blobName)
-        {
-            try
-            {
-                // Construct the URL for your Azure Function endpoint
-                string requestUrl = "http://localhost:7250/api/ProcessFileFunction";
-
-                using (HttpClient httpClient = new HttpClient())
-                {
-                    // Log the request URL
-                    Console.WriteLine($"Sending request to: {requestUrl}");
-
-                    // Make an HTTP GET request
-                    HttpResponseMessage response = await httpClient.GetAsync(requestUrl);
-
-                    // Log the response status code
-                    Console.WriteLine($"Response status code: {response.StatusCode}");
-
-                    // Check if the response is successful
-                    response.EnsureSuccessStatusCode();
-
-                    // Read the content from the response
-                    string content = await response.Content.ReadAsStringAsync();
-
-                    // Log the response content
-                    Console.WriteLine($"Response content: {content}");
-
-                    // Return the processed data
-                    return content;
-                }
-            }
-            catch (HttpRequestException ex)
-            {
-                // Log the exception or handle it accordingly
-                Console.WriteLine($"HTTP request failed: {ex.Message}");
-                throw;
-            }
-        }
+       
         private async Task SendMessageToServiceBus(string blobName)
         {
-            // Get the connection string for your Azure Service Bus namespace
+            // connection string for Azure Service Bus
             string serviceBusConnectionString = _configuration.GetConnectionString("AzureServiceBus");
 
             // Create a ServiceBusClient

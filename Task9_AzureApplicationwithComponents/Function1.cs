@@ -49,15 +49,12 @@ namespace Task9_AzureApplicationwithComponents
             // Get the uploaded file from the request
             var file = req.Form.Files["file"];
 
-            // Perform your file processing logic here
-            // Example: Deserialize the JSON content from the file
+            // Deserialize the JSON content from the file
             using (var reader = new StreamReader(file.OpenReadStream()))
             {
                 var jsonContent = reader.ReadToEnd();
                 // Assuming the JSON content represents a string, adjust the deserialization based on your actual data structure
                 var processedData = JsonConvert.DeserializeObject<string>(jsonContent);
-
-                // Perform any additional processing if needed
 
                 return processedData;
             }
